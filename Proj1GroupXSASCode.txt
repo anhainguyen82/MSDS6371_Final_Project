@@ -1,0 +1,36 @@
+/* This code assumes that the training and test sets have been imported.  They have been called “train” and “test” respectively … the final data set we would like you to export and submit to Kaggle is called results2 … Whamo! 
+At this point the train and test sets have been preprocessed so that there is no cleaning or manipulation of the data done with SAS code here.  */
+
+
+data test;
+set test;
+SalePrice = .;
+;
+
+data train2;
+ set train test;
+run;
+
+proc glm data = train2 plots = all;
+class RoofStyle RoofMatl Exterior1st Exterior2nd MasVnrType;
+model SalePrice = RoofStyle RoofMatl Exterior1st Exterior2nd MasVnrType LotArea BedroomAbvGr YearBuilt / cli solution;
+output out = results p = Predict;
+run;
+
+
+/* Can't have negative predictions because of RMLSE */
+/* Also must have only two columns with appropriate labels. */
+
+data results2;
+set results;
+if Predict > 0 then SalePrice = Predict;
+if Predict < 0 then SalePrice = 10000;
+keep id SalePrice;
+where id > 1460;
+;
+
+
+
+/*That's it! ... From here we will export results2 to a csv file on the desktop and then upload it to Kaggle. */
+
+
