@@ -28,8 +28,8 @@ data logneighborhoodSS;
 	logGrLivAreaper100 = log(GrLivArea/100);
 run;
 
-proc print data = logneighborhoodSS;
-run;
+/*proc print data = logneighborhoodSS;
+run;*/
 
 /*Scatterplot the Saleprice to GrLivArea for the three requested neighborhoods*/
 proc sgplot data=logneighborhoodSS;
@@ -75,7 +75,7 @@ run;
 /* Model for Salesprice to GrLivArea*/ 
 proc glm data = logneighborhoodSScheapsmall plots=all;
 class Neighborhood;
-model SalePrice = GrLivAreaper100 | Neighborhood / cli clm clparm;
+model SalePrice = GrLivAreaper100 | Neighborhood / cli clm clparm solution;
 run;
 
 /* Model with log transformed SalePrice*/
@@ -92,6 +92,12 @@ run;
 
 /* Model with log-log transformed SalePrice-GrLivAreaper100*/
 proc glm data = logneighborhoodSS plots=all;
+class Neighborhood;
+model logSalePrice = logGrLivAreaper100 | Neighborhood / cli clm clparm;
+run;
+
+/* Model with log-log transformed SalePrice-GrLivAreaper100 on homes that are less than $300,000 and 40 100 sq. ft.*/
+proc glm data = logneighborhoodSScheapsmall plots=all;
 class Neighborhood;
 model logSalePrice = logGrLivAreaper100 | Neighborhood / cli clm clparm;
 run;
