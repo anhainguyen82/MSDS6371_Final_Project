@@ -1,0 +1,252 @@
+---
+title: "clean_merge_data"
+author: "Andy Ho"
+date: "8/9/2018"
+output: html_document
+---
+
+```{r}
+train <- read.csv("train.csv", stringsAsFactors = FALSE)
+test <- read.csv("test.csv", stringsAsFactors = FALSE)
+test$SalePrice <- 'NA'
+master <- rbind(train, test)
+
+write.csv (master, "master_na_2.csv", row.names = FALSE)
+
+# Categorical Mapping for MSZoning
+master$MSZoning[master$MSZoning=="C (all)"]<-1
+master$MSZoning[master$MSZoning=="FV"]<-2
+master$MSZoning[master$MSZoning=="RH"]<-3
+master$MSZoning[master$MSZoning=="RL"]<-4
+master$MSZoning[master$MSZoning=="RM"]<-5
+master$MSZoning[is.na(master$Zoning)]<-6
+
+# Categorical Mapping for Alley
+master$Alley[master$Alley=="Grvl"]<-1
+master$Alley[master$Alley=="Pave"]<-2
+master$Alley[is.na(master$Alley)]<-3
+
+# Categorical Mapping for Utilities
+master$Utilities[master$Utilities=="AllPub"]<-1
+master$Utilities[master$Utilities=="NoSeWa"]<-2
+master$Utilities[is.na(master$Utilities)]<-3
+
+# Categorical Mapping for Exterior1st
+master$Exterior1st[master$Exterior1st=="VinylSd"]<-1
+master$Exterior1st[master$Exterior1st=="MetalSd"]<-2
+master$Exterior1st[master$Exterior1st=="Wd Sdng"]<-3
+master$Exterior1st[master$Exterior1st=="HdBoard"]<-4
+master$Exterior1st[master$Exterior1st=="BrkFace"]<-5
+master$Exterior1st[master$Exterior1st=="WdShing"]<-6
+master$Exterior1st[master$Exterior1st=="CemntBd"]<-7
+master$Exterior1st[master$Exterior1st=="Plywood"]<-8
+master$Exterior1st[master$Exterior1st=="AsbShng"]<-9
+master$Exterior1st[master$Exterior1st=="Stucco"]<-10
+master$Exterior1st[master$Exterior1st=="BrkComm"]<-11
+master$Exterior1st[master$Exterior1st=="AsphShn"]<-12
+master$Exterior1st[master$Exterior1st=="Stone"]<-13
+master$Exterior1st[master$Exterior1st=="Other"]<-14
+master$Exterior1st[master$Exterior1st=="CBlock"]<-15
+master$Exterior1st[is.na(master$Exterior1st)]<-16
+
+# Categorical Mapping for Exterior2nd
+master$Exterior2nd[master$Exterior2nd=="VinylSd"]<-1
+master$Exterior2nd[master$Exterior2nd=="MetalSd"]<-2
+master$Exterior2nd[master$Exterior2nd=="Wd Shng"]<-3
+master$Exterior2nd[master$Exterior2nd=="HdBoard"]<-4
+master$Exterior2nd[master$Exterior2nd=="Plywood"]<-5
+master$Exterior2nd[master$Exterior2nd=="Wd Sdng"]<-6
+master$Exterior2nd[master$Exterior2nd=="Cmentbd"]<-7
+master$Exterior2nd[master$Exterior2nd=="BrkFace"]<-8
+master$Exterior2nd[master$Exterior2nd=="Stucco"]<-9
+master$Exterior2nd[master$Exterior2nd=="AsbShng"]<-10
+master$Exterior2nd[master$Exterior2nd=="Brk Cmn"]<-11
+master$Exterior2nd[master$Exterior2nd=="ImStucc"]<-12
+master$Exterior2nd[master$Exterior2nd=="AsphShn"]<-13
+master$Exterior2nd[master$Exterior2nd=="Stone"]<-14
+master$Exterior2nd[master$Exterior2nd=="Other"]<-15
+master$Exterior2nd[master$Exterior2nd=="CBlock"]<-16
+master$Exterior2nd[is.na(master$Exterior2nd)]<-17
+
+# Categorical Mapping for MasVnrType
+master$MasVnrType[master$MasVnrType=="BrkCmn"]<-1
+master$MasVnrType[master$MasVnrType=="BrkFace"]<-2
+master$MasVnrType[master$MasVnrType=="None"]<-3
+master$MasVnrType[master$MasVnrType=="Stone"]<-4
+master$MasVnrType[is.na(master$MasVnrType)]<-5
+
+# Categorical Mapping for BsmtQual
+master$BsmtQual[master$BsmtQual=="Ex"]<-1
+master$BsmtQual[master$BsmtQual=="Fa"]<-2
+master$BsmtQual[master$BsmtQual=="Gd"]<-3
+master$BsmtQual[master$BsmtQual=="TA"]<-4
+master$BsmtQual[is.na(master$BsmtQual)]<-5
+
+# Categorical Mapping for BsmtCond
+master$BsmtCond[master$BsmtCond=="Fa"]<-1
+master$BsmtCond[master$BsmtCond=="Gd"]<-2
+master$BsmtCond[master$BsmtCond=="Po"]<-3
+master$BsmtCond[master$BsmtCond=="TA"]<-4
+master$BsmtCond[is.na(master$BsmtCond)]<-5
+
+# Categorical Mapping for BsmtExposure
+master$BsmtExposure[master$BsmtExposure=="Gd"]<-1
+master$BsmtExposure[master$BsmtExposure=="Av"]<-2
+master$BsmtExposure[master$BsmtExposure=="Mn"]<-3
+master$BsmtExposure[master$BsmtExposure=="No"]<-4
+master$BsmtExposure[is.na(master$BsmtExposure)]<-5
+
+# Categorical Mapping for BsmtFinType1
+master$BsmtFinType1[master$BsmtFinType1=="ALQ"]<-1
+master$BsmtFinType1[master$BsmtFinType1=="BLQ"]<-2
+master$BsmtFinType1[master$BsmtFinType1=="GLQ"]<-3
+master$BsmtFinType1[master$BsmtFinType1=="LwQ"]<-4
+master$BsmtFinType1[master$BsmtFinType1=="Rec"]<-5
+master$BsmtFinType1[master$BsmtFinType1=="Unf"]<-6
+master$BsmtFinType1[is.na(master$BsmtFinType1)]<-7
+
+# Categorical Mapping for BsmtFinSF1
+master$BsmtFinSF1[is.na(master$BsmtFinSF1)]<-0
+
+# Categorical Mapping for BsmtFinType2
+master$BsmtFinType2[master$BsmtFinType2=="ALQ"]<-1
+master$BsmtFinType2[master$BsmtFinType2=="BLQ"]<-2
+master$BsmtFinType2[master$BsmtFinType2=="GLQ"]<-3
+master$BsmtFinType2[master$BsmtFinType2=="LwQ"]<-4
+master$BsmtFinType2[master$BsmtFinType2=="Rec"]<-5
+master$BsmtFinType2[master$BsmtFinType2=="Unf"]<-6
+master$BsmtFinType2[is.na(master$BsmtFinType2)]<-7
+
+# Categorical Mapping for BsmtFinSF2
+master$BsmtFinSF2[is.na(master$BsmtFinSF2)]<-0
+
+# Categorical Mapping for Electrical
+master$Electrical[master$Electrical=="FuseA"]<-1
+master$Electrical[master$Electrical=="FuseF"]<-2
+master$Electrical[master$Electrical=="FuseP"]<-3
+master$Electrical[master$Electrical=="Mix"]<-4
+master$Electrical[master$Electrical=="SBrkr"]<-5
+master$Electrical[is.na(master$Electrical)]<-6
+
+# Categorical Mapping for BsmtFullBath
+master$BsmtFullBath[is.na(master$BsmtFullBath)] <- 4
+
+# Categorical Mapping for BsmtHalfBath
+master$BsmtHalfBath[is.na(master$BsmtHalfBath)] <- 3
+
+# Categorical Mapping for KitchenQual
+master$KitchenQual[master$KitchenQual=="Ex"]<-1
+master$KitchenQual[master$KitchenQual=="Fa"]<-2
+master$KitchenQual[master$KitchenQual=="Gd"]<-3
+master$KitchenQual[master$KitchenQual=="TA"]<-4
+master$KitchenQual[is.na(master$KitchenQual)]<-5
+
+# Categorical Mapping for Functional
+master$Functional[master$Functional=="Maj1"]<-1
+master$Functional[master$Functional=="Maj2"]<-2
+master$Functional[master$Functional=="Min1"]<-3
+master$Functional[master$Functional=="Min2"]<-4
+master$Functional[master$Functional=="Mod"]<-5
+master$Functional[master$Functional=="Typ"]<-6
+master$Functional[master$Functional=="Sev"]<-7
+master$Functional[is.na(master$Functional)]<-8
+
+# Categorical Mapping for FireplaceQU
+master$FireplaceQu[master$FireplaceQu=="Ex"]<-1
+master$FireplaceQu[master$FireplaceQu=="Fa"]<-2
+master$FireplaceQu[master$FireplaceQu=="Gd"]<-3
+master$FireplaceQu[master$FireplaceQu=="TA"]<-4
+master$FireplaceQu[master$FireplaceQu=="Po"]<-5
+master$FireplaceQu[is.na(master$FireplaceQu)] <-6
+
+# Categorical Mapping for GarageType
+master$GarageType[master$GarageType=="2Types"]<-1
+master$GarageType[master$GarageType=="Attchd"]<-2
+master$GarageType[master$GarageType=="Basment"]<-3
+master$GarageType[master$GarageType=="BuiltIn"]<-4
+master$GarageType[master$GarageType=="CarPort"]<-5
+master$GarageType[master$GarageType=="Detchd"]<-6
+master$GarageType[is.na(master$GarageType)]<-7
+
+# Categorical Mapping for GarageFinish
+master$GarageFinish[master$GarageFinish=="Fin"]<-1
+master$GarageFinish[master$GarageFinish=="RFn"]<-2
+master$GarageFinish[master$GarageFinish=="Unf"]<-3
+master$GarageFinish[is.na(master$GarageFinish)] <-4
+
+# Categorical Mapping for GarageQual
+master$GarageQual[master$GarageQual=="Ex"]<-1
+master$GarageQual[master$GarageQual=="Fa"]<-2
+master$GarageQual[master$GarageQual=="Gd"]<-3
+master$GarageQual[master$GarageQual=="TA"]<-4
+master$GarageQual[master$GarageQual=="Po"]<-5
+master$GarageQual[is.na(master$GarageQual)]<-6
+
+# Categorical Mapping for GarageCond
+master$GarageCond[master$GarageCond=="Ex"]<-1
+master$GarageCond[master$GarageCond=="Fa"]<-2
+master$GarageCond[master$GarageCond=="Gd"]<-3
+master$GarageCond[master$GarageCond=="TA"]<-4
+master$GarageCond[master$GarageCond=="Po"]<-5
+master$GarageCond[is.na(master$GarageCond)]<-6
+
+# Categorical Mapping for PoolQC
+master$PoolQC[master$PoolQC=="Ex"]<-1
+master$PoolQC[master$PoolQC=="Gd"]<-2
+master$PoolQC[master$PoolQC=="Fa"]<-3
+master$PoolQC[is.na(master$PoolQC)]<-4
+
+# Categorical Mapping for Fence
+master$Fence[master$Fence=="GdPrv"]<-1
+master$Fence[master$Fence=="GdWo"]<-2
+master$Fence[master$Fence=="MnPrv"]<-3
+master$Fence[master$Fence=="MnWw"]<-4
+master$Fence[is.na(master$Fence)]<-5
+
+# Categorical Mapping for MiscFeature
+master$MiscFeature[master$MiscFeature=="Shed"]<-1
+master$MiscFeature[master$MiscFeature=="Gar2"]<-2
+master$MiscFeature[master$MiscFeature=="Othr"]<-3
+master$MiscFeature[master$MiscFeature=="TenC"]<-4
+master$MiscFeature[is.na(master$MiscFeature)]<-5
+
+# Categorical Mapping for SaleType
+master$SaleType[master$SaleType=="WD"]<-1
+master$SaleType[master$SaleType=="New"]<-2
+master$SaleType[master$SaleType=="COD"]<-3
+master$SaleType[master$SaleType=="ConLD"]<-4
+master$SaleType[master$SaleType=="ConLI"]<-5
+master$SaleType[master$SaleType=="CWD"]<-6
+master$SaleType[master$SaleType=="ConLw"]<-7
+master$SaleType[master$SaleType=="Con"]<-8
+master$SaleType[master$SaleType=="Oth"]<-9
+master$SaleType[is.na(master$SaleType)]<-10
+
+# convert character Variable to Numeric
+master$MSZoning <- as.numeric(as.character(master$MSZoning))
+master$Alley <- as.numeric(as.character(master$Alley))
+master$Utilities <- as.numeric(as.character(master$Utilities))
+master$Exterior1st <- as.numeric(as.character(master$Exterior1st))
+master$Exterior2nd <- as.numeric(as.character(master$Exterior2nd))
+master$MasVnrType <- as.numeric(as.character(master$MasVnrType))
+master$BsmtQual <- as.numeric(as.character(master$BsmtQual))
+master$BsmtCond <- as.numeric(as.character(master$BsmtCond))
+master$BsmtExposure <- as.numeric(as.character(master$BsmtExposure))
+master$BsmtFinType1 <- as.numeric(as.character(master$BsmtFinType1))
+master$BsmtFinType2 <- as.numeric(as.character(master$BsmtFinType2))
+master$Electrical <- as.numeric(as.character(master$Electrical))
+master$KitchenQual <- as.numeric(as.character(master$KitchenQual))
+master$Functional <- as.numeric(as.character(master$Functional))
+master$FireplaceQu <- as.numeric(as.character(master$FireplaceQu))
+master$GarageType <- as.numeric(as.character(master$GarageType))
+master$GarageFinish <- as.numeric(as.character(master$GarageFinish))
+master$GarageQual <- as.numeric(as.character(master$GarageQual))
+master$GarageCond <- as.numeric(as.character(master$GarageCond))
+master$PoolQC <- as.numeric(as.character(master$PoolQC))
+master$Fence <- as.numeric(as.character(master$Fence))
+master$MiscFeature <- as.numeric(as.character(master$MiscFeature))
+master$SaleType <- as.numeric(as.character(master$SaleType))
+write.csv (master, "master.csv", row.names = FALSE)
+
+```
+
