@@ -1,0 +1,132 @@
+---
+title: "Housing data cleaning"
+author: "An Nguyen"
+date: "August 8, 2018"
+output: html_document
+---
+
+```{r}
+trainDF <- read.csv("train.csv", header = T, stringsAsFactors = F)
+str(trainDF)
+
+#summary stat for all numerical variables.  LotFrontage, MasVnArea, and GarageYrBlt found to have NA's
+varNames <- names(trainDF)
+for (i in 1:length(trainDF)){
+  if (!is.character(trainDF[[i]])){
+    print(varNames[i])
+    print(summary(trainDF[[i]]))
+  }
+}
+
+#isolate character variables
+
+for (i in 1:length(trainDF)){
+  if (is.character(trainDF[[i]])){
+    print(varNames[i])
+  }
+}
+
+#Set zones to numeric
+trainDF$MSZoning <- as.numeric(ifelse(trainDF$MSZoning == "A", 1,  
+                           ifelse(trainDF$MSZoning == "C (all)", 2,  
+                                  ifelse(trainDF$MSZoning == "FV", 3,  
+                                         ifelse(trainDF$MSZoning == "I", 4,  
+                                                ifelse(trainDF$MSZoning == "RH", 5,  
+                                                       ifelse(trainDF$MSZoning == "RL", 6,  
+                                                              ifelse(trainDF$MSZoning == "RP", 7, 
+                                                                     ifelse(trainDF$MSZoning == "RM", 8, trainDF$MSZoning)))))))))
+
+#set street to numeric
+trainDF$Street <- as.numeric(ifelse(trainDF$Street == "Pave", 1,
+                                    ifelse(trainDF$Street == "Grvl", 2, trainDF$Street)))
+
+#set alley to numeric
+trainDF$Alley <- as.numeric(ifelse(trainDF$Alley == "Pave", 1, 
+                                   ifelse(trainDF$Alley == "Grvl", 2,
+                                          ifelse(trainDF$Alley == "NA", 0, trainDF$Alley))))
+
+#set lot shape to numeric                                 
+trainDF$LotShape <- as.numeric(ifelse(trainDF$LotShape == "Reg", 1,  
+                           ifelse(trainDF$LotShape == "IR1", 2,  
+                                  ifelse(trainDF$LotShape == "IR2", 3, 4))))
+                                  
+#set land contour to numeric                                 
+trainDF$LandContour <- as.numeric(ifelse(trainDF$LandContour == "Lvl", 1,  
+                           ifelse(trainDF$LandContour == "Bnk", 2,  
+                                  ifelse(trainDF$LandContour == "Low", 3, 
+                                         ifelse(trainDF$LandContour == "HLS", 4, trainDF$LandContour)))))
+
+#set Utilities to numeric                                  
+trainDF$Utilities <- as.numeric(ifelse(trainDF$Utilities == "ELO", 1,  
+                           ifelse(trainDF$Utilities == "NoSewr", 2,  
+                                  ifelse(trainDF$Utilities == "NoSeWa", 3, 
+                                         ifelse(trainDF$Utilities == "AllPub", 4, trainDF$Utilities)))))                            
+
+#set lot configuration to numeric                                 
+trainDF$LotConfig <- as.numeric(ifelse(trainDF$LotConfig == "Inside", 1,  
+                           ifelse(trainDF$LotConfig == "Corner", 2,  
+                                  ifelse(trainDF$LotConfig == "CulDSac", 3, 
+                                         ifelse(trainDF$LotConfig == "FR2", 4, 
+                                                ifelse(trainDF$LotConfig == "FR3", 5, trainDF$LotConfig))))))
+                                              
+[1] "LandSlope"
+[1] "Neighborhood"
+[1] "Condition1"
+[1] "Condition2"
+[1] "BldgType"
+[1] "HouseStyle"
+[1] "RoofStyle"
+[1] "RoofMatl"
+[1] "Exterior1st"
+[1] "Exterior2nd"
+[1] "MasVnrType"
+[1] "ExterQual"
+[1] "ExterCond"
+[1] "Foundation"
+[1] "BsmtQual"
+[1] "BsmtCond"
+[1] "BsmtExposure"
+[1] "BsmtFinType1"
+[1] "BsmtFinType2"
+[1] "Heating"
+[1] "HeatingQC"
+[1] "CentralAir"
+[1] "Electrical"
+[1] "KitchenQual"
+[1] "Functional"
+[1] "FireplaceQu"
+[1] "GarageType"
+[1] "GarageFinish"
+[1] "GarageQual"
+[1] "GarageCond"
+[1] "PavedDrive"
+[1] "PoolQC"
+[1] "Fence"
+[1] "MiscFeature"
+[1] "SaleType"
+[1] "SaleCondition"
+
+#assume NA means there is no driveway infront of property
+for (i in 1:length(trainDF$LotFrontage)){
+  if (is.na(trainDF$LotFrontage[i])){
+    trainDF$LotFrontage[i] <- 0 
+  }
+}
+
+#assume NA means there is no masonry veneer
+for (i in 1:length(trainDF$MasVnrArea)){
+  if (is.na(trainDF$MasVnrArea[i])){
+    trainDF$MasVnrArea[i] <- 0 
+  }
+}
+
+#assume NA means there is no garage, set value to blank "." for SAS
+for (i in 1:length(trainDF$GarageYrBlt)){
+  if (is.na(trainDF$GarageYrBlt[i])){
+    trainDF$GarageYrBlt[i] <- "." 
+  }
+}
+ 
+
+```
+
