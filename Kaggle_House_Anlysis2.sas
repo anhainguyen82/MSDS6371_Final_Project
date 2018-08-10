@@ -42,3 +42,11 @@ GarageQual GarageCond PavedDrive Fence MiscFeature SaleType SaleCondition;
 model SalePrice = MSSubClass--SaleCondition / selection = stepwise;
 run;
 
+
+proc glm data = train;      
+class KitchenQual GarageFinish BsmtQual ExterQual MasVnrType Neighborhood;                                                                                                                   
+model SalePrice = LotFrontage LotArea OverallQual OverallCond YearBuilt BsmtFinSF1 
+TotalBsmtSF _1stFlrSF _2ndFlrSF GrLivArea FullBath TotRmsAbvGrd GarageYrBlt GarageCars 
+GarageArea WoodDeckSF OpenPorchSF KitchenQual GarageFinish BsmtQual ExterQual MasVnrType 
+Neighborhood/ solution;
+run;
