@@ -1,0 +1,23 @@
+---
+title: "EDA"
+author: "An Nguyen"
+date: "August 11, 2018"
+output: html_document
+---
+
+```{r}
+trainDF <- read.csv("masterAN.csv", header = T, stringsAsFactors = F)
+trainDF <- subset(trainDF[1:1470,])
+trainDF$SalePrice <- as.integer(trainDF$SalePrice)
+titles <- names(trainDF)
+
+for (i in 1:length(trainDF)){
+  if (is.character(trainDF[[i]])){
+    boxplot(trainDF$SalePrice ~ trainDF[[i]], main = paste("Sale price vs ", titles[i], sep=""), ylab = titles[i], xlab = "Sale price", horizontal = T, las = 1)
+  }
+    else if (is.integer(trainDF[[i]])){
+    plot(x = trainDF[[i]], y = trainDF$SalePrice, main = paste("Sale price vs ", titles[i], sep=""), xlab = titles[i], ylab = "Sale price")
+    }
+}
+```
+
