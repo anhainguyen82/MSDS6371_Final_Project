@@ -12,7 +12,7 @@ data train;
 		OpenPorchSF EnclosedPorch _3SsnPorch ScreenPorch PoolArea PoolQC $ Fence $ MiscFeature $ 
 		MiscVal MoSold YrSold SaleType $ SaleCondition $ SalePrice;
 
-%*Forward selection;
+/*Forward selection*/
 proc glmselect data=train seed=1;
 	class MSZoning Street Alley LotShape LandContour Utilities LotConfig LandSlope 
 		Neighborhood Condition1 Condition2 BldgType HouseStyle RoofStyle RoofMatl 
@@ -24,7 +24,6 @@ proc glmselect data=train seed=1;
 		stop=CV) cvmethod=split(10) CVdetails;
 	output out=forward_results p=Predict;
 run;
-
 
 data forward_results2;
 	set forward_results;
@@ -45,7 +44,7 @@ run;
 proc print data=forward_results2;
 run;
 
-%*Backward elimination;
+/*Backward elimination*/
 proc glmselect data=train seed=1;
 	class MSZoning Street Alley LotShape LandContour Utilities LotConfig LandSlope 
 		Neighborhood Condition1 Condition2 BldgType HouseStyle RoofStyle RoofMatl 
@@ -77,7 +76,7 @@ run;
 proc print data=backward_results2;
 run;
 
-%*Stepwise selection;
+/*Stepwise selection*/
 proc glmselect data=train seed=1;
 	class MSZoning Street Alley LotShape LandContour Utilities LotConfig LandSlope 
 		Neighborhood Condition1 Condition2 BldgType HouseStyle RoofStyle RoofMatl 
@@ -110,7 +109,7 @@ proc print data=stepwise_results2;
 run;
 
 
-%*Custom model;		
+/*Custom model*/	
 proc glmselect data=train2 plots=all;
 	class KitchenQual GarageFinish BsmtQual ExterQual MasVnrType Neighborhood;
 	model SalePrice=LotFrontage LotArea OverallQual OverallCond YearBuilt 
